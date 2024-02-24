@@ -1,10 +1,8 @@
-import taskmanager.Epic;
-import taskmanager.Subtask;
-import taskmanager.Task;
+import TypeTask.Epic;
+import TypeTask.Subtask;
+import TypeTask.Task;
 import taskmanager.TaskManager;
-import taskmanager.enums.TaskStatus;
-
-import java.util.HashMap;
+import enums.TaskStatus;
 
 public class Main {
 
@@ -24,12 +22,12 @@ public class Main {
         Epic epic2= new Epic("Эпик_2", "Описание_2");
         Subtask subtask3 = new Subtask("Подзача3_Эпик2", "Описание3_Эпик2");
 
-        taskManager.addSubtask(subtask1);
-        taskManager.addSubtask(subtask2);
         taskManager.addEpic(epic1);
-        taskManager.addLinkSubtaskWithEpic(subtask1,epic1);
-        taskManager.addLinkSubtaskWithEpic(subtask2,epic1);
-        taskManager.addLinkSubtaskWithEpic(subtask3, epic2);
+        taskManager.addEpic(epic2);
+
+        taskManager.addSubtask(subtask1, epic1);
+        taskManager.addSubtask(subtask2, epic1);
+        taskManager.addSubtask(subtask3, epic2);
 
         System.out.println(taskManager.getTasks());
         System.out.println(taskManager.getEpics());

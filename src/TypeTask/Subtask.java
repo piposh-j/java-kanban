@@ -1,13 +1,12 @@
-package taskmanager;
+package TypeTask;
 
-import taskmanager.enums.TaskStatus;
+import enums.TaskStatus;
 
 public class Subtask extends Task {
-    private int parentEpicId = -1;
+    private int parentEpicId = 0;
 
     public Subtask(String name, String description) {
         super(name, description);
-        this.status = TaskStatus.NEW;
     }
 
     public Subtask(String name, String description, int parentEpicId) {

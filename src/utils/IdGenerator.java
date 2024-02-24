@@ -2,13 +2,13 @@ package utils;
 
 public class IdGenerator {
 
-    private static int idSequence = 0;
-    private IdGenerator(){
+    private int idSequence;
+    public IdGenerator(){
 
     }
 
-    public static int getIdSequence(){
-        return idSequence++;
+    public int getIdSequence(){
+        return ++idSequence;
     }
 
 }

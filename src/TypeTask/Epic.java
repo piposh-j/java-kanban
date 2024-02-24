@@ -1,37 +1,36 @@
-package taskmanager;
+package TypeTask;
 
-import taskmanager.enums.TaskStatus;
+import enums.TaskStatus;
 
 import java.util.ArrayList;
 
 public class Epic extends Task{
-    private ArrayList<Subtask> subtasks = new ArrayList<>();
+    private ArrayList<Integer> IdsSubtasks = new ArrayList<>();
     public Epic(String name, String description) {
        super(name, description);
-       this.status = TaskStatus.NEW;
     }
 
-    public Epic(String name, String description, Subtask subtasks) {
+    public Epic(String name, String description, Integer IdSubtask) {
         super(name, description);
-        this.subtasks.add(subtasks);
+        this.IdsSubtasks.add(IdSubtask);
     }
 
     public Epic(int id, String name, String description) {
         super(id, name, description, TaskStatus.NEW);
     }
 
-    public ArrayList<Subtask> getSubtasks() {
-        return subtasks;
+    public ArrayList<Integer> getIdsSubtasks() {
+        return IdsSubtasks;
     }
 
-    public void setSubtasks(ArrayList<Subtask> subtasks) {
-        this.subtasks = subtasks;
+    public void setSubtasks(ArrayList<Integer> subtasks) {
+        this.IdsSubtasks = subtasks;
     }
 
     @Override
     public String toString() {
         return "Epic{" +
-                "subtasks=" + subtasks +
+                "IdsSubtasks=" + IdsSubtasks +
                 ", id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
