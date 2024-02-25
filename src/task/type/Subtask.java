@@ -1,4 +1,4 @@
-package TypeTask;
+package task.type;
 
 import enums.TaskStatus;
 
@@ -7,16 +7,6 @@ public class Subtask extends Task {
 
     public Subtask(String name, String description) {
         super(name, description);
-    }
-
-    public Subtask(String name, String description, int parentEpicId) {
-        super(name, description);
-        this.parentEpicId = parentEpicId;
-    }
-
-    public Subtask(int id, String name, String description, TaskStatus status, int parentEpicId) {
-        super(id, name, description, status);
-        this.parentEpicId = parentEpicId;
     }
 
     public Subtask(int id, String name, String description, TaskStatus status, Epic epic) {

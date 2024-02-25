@@ -1,8 +1,8 @@
-package taskmanager;
+package task.manager;
 
-import TypeTask.Epic;
-import TypeTask.Subtask;
-import TypeTask.Task;
+import task.type.Epic;
+import task.type.Subtask;
+import task.type.Task;
 import enums.TaskStatus;
 import utils.IdGenerator;
 
@@ -45,9 +45,7 @@ public class TaskManager {
     }
 
     public Task deleteTaskById(int id) {
-        Task currentTask = tasks.get(id);
-        tasks.remove(id);
-        return currentTask;
+        return tasks.remove(id);
     }
 
     /*
@@ -73,12 +71,8 @@ public class TaskManager {
         return epic;
     }
 
-    //При обновления эпика, сохраняем связь с subtasks
     public Epic updateEpic(Epic epic) {
         if (epics.containsKey(epic.getId())) {
-            ArrayList<Integer> temp;
-            temp = epics.get(epic.getId()).getIdsSubtasks();
-            epic.setSubtasks(temp);
             epics.put(epic.getId(), epic);
             updateEpicStatus(epic);
         }
@@ -106,7 +100,10 @@ public class TaskManager {
     // У каждого эпика очищаем свзять с сабтаском
     public void deleteSubtasks() {
         subtasks.clear();
-        epics.clear();
+        for (Epic epic : epics.values()) {
+            epic.getIdsSubtasks().clear();
+            updateEpicStatus(epic);
+        }
     }
 
     public Subtask getSubtaskById(int id) {
@@ -125,9 +122,7 @@ public class TaskManager {
     public Subtask updateSubtask(Subtask subtask) {
         if (subtasks.containsKey(subtask.getId())) {
             subtasks.put(subtask.getId(), subtask);
-            if (subtask.getParentEpicId() != 0) {
-                updateEpicStatus(getEpicById(subtask.getParentEpicId()));
-            }
+            updateEpicStatus(getEpicById(subtask.getParentEpicId()));
         }
         return subtask;
     }
@@ -143,12 +138,10 @@ public class TaskManager {
         return currentSubtask;
     }
 
-    public HashMap<Integer, Subtask> getSubtasksByEpic(Epic epic) {
-        HashMap<Integer, Subtask> newSubtasks = new HashMap<>();
-        for (Subtask subtask : subtasks.values()) {
-            if (subtask.getParentEpicId() == epic.getId()) {
-                newSubtasks.put(subtask.getId(), subtask);
-            }
+    public ArrayList<Subtask> getSubtasksByEpic(Epic epic) {
+        ArrayList<Subtask> newSubtasks = new ArrayList<>();
+        for (Integer idSubtask : epic.getIdsSubtasks()) {
+            newSubtasks.add(subtasks.get(idSubtask));
         }
         return newSubtasks;
     }

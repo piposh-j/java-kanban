@@ -1,4 +1,4 @@
-package TypeTask;
+package task.type;
 
 import enums.TaskStatus;
 
@@ -9,10 +9,6 @@ public class Task {
     protected String name;
     protected String description;
     protected TaskStatus status;
-
-    public Task(String name, String description, TaskStatus status) {
-        this(0, name, description, status);
-    }
 
     public Task(int id, String name, String description, TaskStatus status) {
         this.id = id;
@@ -74,7 +70,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "TypeTask.Task{" +
+        return "task.type.Task{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

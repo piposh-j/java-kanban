@@ -1,7 +1,7 @@
-import TypeTask.Epic;
-import TypeTask.Subtask;
-import TypeTask.Task;
-import taskmanager.TaskManager;
+import task.type.Epic;
+import task.type.Subtask;
+import task.type.Task;
+import task.manager.TaskManager;
 import enums.TaskStatus;
 
 public class Main {
