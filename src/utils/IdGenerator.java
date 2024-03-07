@@ -4,7 +4,7 @@ public class IdGenerator {
 
     private int idSequence;
     public int getIdSequence(){
-        return ++idSequence;
+        return idSequence++;
     }
 
 }

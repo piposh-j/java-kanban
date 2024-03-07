@@ -1,13 +1,14 @@
+import task.manager.task.ITaskManager;
 import task.type.Epic;
 import task.type.Subtask;
 import task.type.Task;
-import task.manager.TaskManager;
 import enums.TaskStatus;
+import utils.Managers;
 
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        ITaskManager taskManager = Managers.getDefault();
         Task task1 = new Task("Задача_1","Описание_1");
         Task task2 = new Task("Задача_2","Описание_2");
 
@@ -52,6 +53,10 @@ public class Main {
         System.out.println(taskManager.getTasks());
         System.out.println(taskManager.getEpics());
         System.out.println(taskManager.getSubtasks());
+
+        taskManager.getTaskById(1);
+        System.out.println("getHistory");
+        System.out.println(taskManager.getHistory());
 
     }
 }
