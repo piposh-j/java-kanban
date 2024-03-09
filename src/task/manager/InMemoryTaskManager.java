@@ -1,23 +1,22 @@
-package task.manager.task;
+package task.manager;
 
-import task.manager.history.IHistoryManager;
-import task.type.Epic;
-import task.type.Subtask;
-import task.type.Task;
-import enums.TaskStatus;
-import utils.IdGenerator;
+import task.Epic;
+import task.Subtask;
+import task.Task;
+import task.enums.TaskStatus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class InMemoryTaskManager implements ITaskManager {
+public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private IdGenerator idGenerator = new IdGenerator();
-    private IHistoryManager historyManager;
+    private HistoryManager historyManager;
+    private int id;
 
-    public InMemoryTaskManager(IHistoryManager defaultHistory) {
+    public InMemoryTaskManager(HistoryManager defaultHistory) {
         this.historyManager = defaultHistory;
     }
 
@@ -42,7 +41,7 @@ public class InMemoryTaskManager implements ITaskManager {
 
     @Override
     public Task addTask(Task task) {
-        task.setId(idGenerator.getIdSequence());
+        task.setId(id++);
         tasks.put(task.getId(), task);
         return task;
     }
@@ -83,7 +82,7 @@ public class InMemoryTaskManager implements ITaskManager {
 
     @Override
     public Epic addEpic(Epic epic) {
-        epic.setId(idGenerator.getIdSequence());
+        epic.setId(id++);
         epics.put(epic.getId(), epic);
         return epic;
     }
@@ -135,7 +134,7 @@ public class InMemoryTaskManager implements ITaskManager {
 
     @Override
     public Subtask addSubtask(Subtask subtask, Epic epic) {
-        subtask.setId(idGenerator.getIdSequence());
+        subtask.setId(id++);
         subtask.setParentEpicId(epic.getId());
         subtasks.put(subtask.getId(), subtask);
         epic.getIdsSubtasks().add(subtask.getId());

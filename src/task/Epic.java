@@ -1,6 +1,4 @@
-package task.type;
-
-import enums.TaskStatus;
+package task;
 
 import java.util.ArrayList;
 

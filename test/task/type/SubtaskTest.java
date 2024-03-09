@@ -1,6 +1,8 @@
 package task.type;
 
-import enums.TaskStatus;
+import task.Epic;
+import task.Subtask;
+import task.enums.TaskStatus;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

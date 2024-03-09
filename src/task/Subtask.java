@@ -1,6 +1,6 @@
-package task.type;
+package task;
 
-import enums.TaskStatus;
+import task.enums.TaskStatus;
 
 public class Subtask extends Task {
     private int parentEpicId = 0;

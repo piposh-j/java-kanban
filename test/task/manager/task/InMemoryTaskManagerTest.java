@@ -1,22 +1,19 @@
 package task.manager.task;
 
-import enums.TaskStatus;
-import org.junit.jupiter.api.Assertions;
+import task.manager.TaskManager;
+import task.enums.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import task.type.Epic;
-import task.type.Subtask;
-import task.type.Task;
-import utils.Managers;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import task.Epic;
+import task.Subtask;
+import task.Task;
+import task.util.Managers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
 
-    private ITaskManager taskManager;
+    private TaskManager taskManager;
 
     @BeforeEach
     void beforeEach() {

@@ -2,23 +2,24 @@ package utils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import task.manager.history.IHistoryManager;
-import task.manager.history.InMemoryHistoryManager;
-import task.manager.task.ITaskManager;
-import task.manager.task.InMemoryTaskManager;
+import task.manager.HistoryManager;
+import task.manager.InMemoryHistoryManager;
+import task.manager.TaskManager;
+import task.manager.InMemoryTaskManager;
+import task.util.Managers;
 
 public class ManagersTest {
 
     @Test
     void getDefaultHistory_shouldReturnInstanceInMemoryHistoryManager() {
-        IHistoryManager history = Managers.getDefaultHistory();
+        HistoryManager history = Managers.getDefaultHistory();
 
         Assertions.assertTrue(history instanceof InMemoryHistoryManager);
     }
 
     @Test
     void getDefault_shouldReturnInstanceInMemoryTaskManager() {
-        ITaskManager history = Managers.getDefault();
+        TaskManager history = Managers.getDefault();
 
         Assertions.assertTrue(history instanceof InMemoryTaskManager);
     }

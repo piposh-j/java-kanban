@@ -1,6 +1,6 @@
-package task.type;
+package task;
 
-import enums.TaskStatus;
+import task.enums.TaskStatus;
 
 import java.util.Objects;
 
@@ -70,7 +70,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "task.type.Task{" +
+        return "task.Task{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

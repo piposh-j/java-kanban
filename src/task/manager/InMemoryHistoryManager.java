@@ -1,12 +1,12 @@
-package task.manager.history;
+package task.manager;
 
-import task.type.Task;
+import task.Task;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InMemoryHistoryManager implements IHistoryManager{
-    final private byte MAX_SIZE_HISTORY = 10;
+public class InMemoryHistoryManager implements HistoryManager {
+    final private static int MAX_SIZE_HISTORY = 10;
     private List<Task> history = new ArrayList<>(MAX_SIZE_HISTORY);
 
     @Override
@@ -16,12 +16,9 @@ public class InMemoryHistoryManager implements IHistoryManager{
 
     @Override
     public void add(Task task) {
-        if(history.size() == MAX_SIZE_HISTORY) {
+        if (history.size() == MAX_SIZE_HISTORY) {
             history.removeFirst();
-            history.add(task);
-
-        } else {
-            history.add(task);
         }
+        history.add(task);
     }
 }

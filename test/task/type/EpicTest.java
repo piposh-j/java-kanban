@@ -1,7 +1,7 @@
 package task.type;
 
-import enums.TaskStatus;
 import org.junit.jupiter.api.Test;
+import task.Epic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -1,14 +1,14 @@
-import task.manager.task.ITaskManager;
-import task.type.Epic;
-import task.type.Subtask;
-import task.type.Task;
-import enums.TaskStatus;
-import utils.Managers;
+import task.manager.TaskManager;
+import task.Epic;
+import task.Subtask;
+import task.Task;
+import task.enums.TaskStatus;
+import task.util.Managers;
 
 public class Main {
 
     public static void main(String[] args) {
-        ITaskManager taskManager = Managers.getDefault();
+        TaskManager taskManager = Managers.getDefault();
         Task task1 = new Task("Задача_1","Описание_1");
         Task task2 = new Task("Задача_2","Описание_2");
 
