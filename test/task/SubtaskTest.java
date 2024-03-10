@@ -1,16 +1,16 @@
-package task.type;
+package task;
 
 import task.Epic;
 import task.Subtask;
-import task.enums.TaskStatus;
+import task.TaskStatus;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SubtaskTest {
     @Test
-    void equals_epicShouldNotBeEqual() {
-        Epic epic1 = new Epic("Название", "Описание");
+    void equals_subtaskShouldNotBeEqual() {
+        Epic epic1 = new Epic(0, "Название", "Описание");
         Subtask subtask1 = new Subtask(0, "Название", "Описание", TaskStatus.NEW, epic1);
         Subtask subtask2 = new Subtask(0, "Название", "Описание", TaskStatus.NEW, epic1);
 

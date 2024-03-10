@@ -1,4 +1,4 @@
-package task.enums;
+package task;
 
 public enum TaskStatus {
     NEW,

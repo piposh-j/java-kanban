@@ -2,33 +2,32 @@ import task.manager.TaskManager;
 import task.Epic;
 import task.Subtask;
 import task.Task;
-import task.enums.TaskStatus;
+import task.TaskStatus;
 import task.util.Managers;
 
 public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
-        Task task1 = new Task("Задача_1","Описание_1");
-        Task task2 = new Task("Задача_2","Описание_2");
+        Task task1 = new Task(0, "Задача_1", "Описание_1", TaskStatus.NEW);
+        Task task2 = new Task(1, "Задача_2", "Описание_2", TaskStatus.NEW);
 
         taskManager.addTask(task1);
         taskManager.addTask(task2);
 
-
-        Subtask subtask1 = new Subtask("Подзача1_Эпик1", "Описание1_Эпик1");
-        Subtask subtask2 = new Subtask("Подзача2_Эпик1", "Описание2_Эпик1");
-        Epic epic1 = new Epic("Эпик_1", "Описание_1");
-
-        Epic epic2= new Epic("Эпик_2", "Описание_2");
-        Subtask subtask3 = new Subtask("Подзача3_Эпик2", "Описание3_Эпик2");
+        Epic epic1 = new Epic(0, "Эпик_1", "Описание_1");
+        Epic epic2 = new Epic(1, "Эпик_2", "Описание_2");
 
         taskManager.addEpic(epic1);
         taskManager.addEpic(epic2);
 
-        taskManager.addSubtask(subtask1, epic1);
-        taskManager.addSubtask(subtask2, epic1);
-        taskManager.addSubtask(subtask3, epic2);
+        Subtask subtask1 = new Subtask(0, "Подзача1_Эпик1", "Описание1_Эпик1", TaskStatus.NEW, epic1);
+        Subtask subtask2 = new Subtask(1, "Подзача2_Эпик1", "Описание2_Эпик1", TaskStatus.NEW, epic1);
+        Subtask subtask3 = new Subtask(3, "Подзача3_Эпик2", "Описание3_Эпик2", TaskStatus.NEW, epic2);
+
+        taskManager.addSubtask(subtask1);
+        taskManager.addSubtask(subtask2);
+        taskManager.addSubtask(subtask3);
 
         System.out.println(taskManager.getTasks());
         System.out.println(taskManager.getEpics());
@@ -42,8 +41,8 @@ public class Main {
         taskManager.updateTask(newStatusTask);
         taskManager.deleteTaskById(task2.getId());
 
-        Subtask newSubtaskStatus1 = new Subtask(subtask1.getId(), "Новая подзадача_1",  "Новое описание подзадачи_1", TaskStatus.DONE, epic1);
-        Subtask newSubtaskStatus2 = new Subtask(subtask3.getId(), "Новая подзадача_3",  "Новое описание подзадачи_3", TaskStatus.IN_PROGRESS, epic2);
+        Subtask newSubtaskStatus1 = new Subtask(subtask1.getId(), "Новая подзадача_1", "Новое описание подзадачи_1", TaskStatus.DONE, epic1);
+        Subtask newSubtaskStatus2 = new Subtask(subtask3.getId(), "Новая подзадача_3", "Новое описание подзадачи_3", TaskStatus.IN_PROGRESS, epic2);
 
         taskManager.updateSubtask(newSubtaskStatus1);
         taskManager.updateSubtask(newSubtaskStatus2);

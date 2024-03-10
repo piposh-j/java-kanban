@@ -3,6 +3,7 @@ package task.manager;
 import task.Epic;
 import task.Subtask;
 import task.Task;
+
 import java.util.List;
 
 public interface TaskManager {
@@ -37,7 +38,7 @@ public interface TaskManager {
 
     Subtask getSubtaskById(int id);
 
-    Subtask addSubtask(Subtask subtask, Epic epic);
+    Subtask addSubtask(Subtask subtask);
 
     Subtask updateSubtask(Subtask subtask);
 
