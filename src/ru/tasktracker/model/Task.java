@@ -1,4 +1,4 @@
-package task;
+package ru.tasktracker.model;
 
 import java.util.Objects;
 

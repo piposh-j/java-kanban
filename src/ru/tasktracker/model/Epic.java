@@ -1,4 +1,4 @@
-package task;
+package ru.tasktracker.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ public class Epic extends Task {
     @Override
     public String toString() {
         return "Epic{" +
-                "IdsSubtasks=" + subtaskIds +
+                "subtaskIds=" + subtaskIds +
                 ", id=" + getId() +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +

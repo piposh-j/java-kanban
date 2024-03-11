@@ -1,11 +1,11 @@
-package task;
+package ru.tasktracker.model;
 
 public class Subtask extends Task {
     private int epicId;
 
-    public Subtask(int id, String name, String description, TaskStatus status, Epic epic) {
+    public Subtask(int id, String name, String description, TaskStatus status, int epicId) {
         super(id, name, description, status);
-        this.epicId = epic.getId();
+        this.epicId = epicId;
     }
 
     public void setEpicId(int epicId) {

@@ -1,7 +1,7 @@
-package task;
+package ru.tasktracker.model;
 
-import task.Task;
-import task.TaskStatus;
+import ru.tasktracker.model.Task;
+import ru.tasktracker.model.TaskStatus;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

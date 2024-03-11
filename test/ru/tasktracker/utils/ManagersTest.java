@@ -1,12 +1,12 @@
-package utils;
+package ru.tasktracker.utils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import task.manager.HistoryManager;
-import task.manager.InMemoryHistoryManager;
-import task.manager.TaskManager;
-import task.manager.InMemoryTaskManager;
-import task.util.Managers;
+import ru.tasktracker.service.HistoryManager;
+import ru.tasktracker.service.InMemoryHistoryManager;
+import ru.tasktracker.service.TaskManager;
+import ru.tasktracker.service.InMemoryTaskManager;
+import ru.tasktracker.util.Managers;
 
 public class ManagersTest {
 

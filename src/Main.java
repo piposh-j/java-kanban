@@ -1,9 +1,9 @@
-import task.manager.TaskManager;
-import task.Epic;
-import task.Subtask;
-import task.Task;
-import task.TaskStatus;
-import task.util.Managers;
+import ru.tasktracker.service.TaskManager;
+import ru.tasktracker.model.Epic;
+import ru.tasktracker.model.Subtask;
+import ru.tasktracker.model.Task;
+import ru.tasktracker.model.TaskStatus;
+import ru.tasktracker.util.Managers;
 
 public class Main {
 
@@ -21,9 +21,9 @@ public class Main {
         taskManager.addEpic(epic1);
         taskManager.addEpic(epic2);
 
-        Subtask subtask1 = new Subtask(0, "Подзача1_Эпик1", "Описание1_Эпик1", TaskStatus.NEW, epic1);
-        Subtask subtask2 = new Subtask(1, "Подзача2_Эпик1", "Описание2_Эпик1", TaskStatus.NEW, epic1);
-        Subtask subtask3 = new Subtask(3, "Подзача3_Эпик2", "Описание3_Эпик2", TaskStatus.NEW, epic2);
+        Subtask subtask1 = new Subtask(0, "Подзача1_Эпик1", "Описание1_Эпик1", TaskStatus.NEW, epic1.getId());
+        Subtask subtask2 = new Subtask(1, "Подзача2_Эпик1", "Описание2_Эпик1", TaskStatus.NEW, epic1.getId());
+        Subtask subtask3 = new Subtask(3, "Подзача3_Эпик2", "Описание3_Эпик2", TaskStatus.NEW, epic2.getId());
 
         taskManager.addSubtask(subtask1);
         taskManager.addSubtask(subtask2);
@@ -41,8 +41,8 @@ public class Main {
         taskManager.updateTask(newStatusTask);
         taskManager.deleteTaskById(task2.getId());
 
-        Subtask newSubtaskStatus1 = new Subtask(subtask1.getId(), "Новая подзадача_1", "Новое описание подзадачи_1", TaskStatus.DONE, epic1);
-        Subtask newSubtaskStatus2 = new Subtask(subtask3.getId(), "Новая подзадача_3", "Новое описание подзадачи_3", TaskStatus.IN_PROGRESS, epic2);
+        Subtask newSubtaskStatus1 = new Subtask(subtask1.getId(), "Новая подзадача_1", "Новое описание подзадачи_1", TaskStatus.DONE, epic1.getId());
+        Subtask newSubtaskStatus2 = new Subtask(subtask3.getId(), "Новая подзадача_3", "Новое описание подзадачи_3", TaskStatus.IN_PROGRESS, epic2.getId());
 
         taskManager.updateSubtask(newSubtaskStatus1);
         taskManager.updateSubtask(newSubtaskStatus2);

@@ -1,7 +1,7 @@
-package task;
+package ru.tasktracker.model;
 
 import org.junit.jupiter.api.Test;
-import task.Epic;
+import ru.tasktracker.model.Epic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

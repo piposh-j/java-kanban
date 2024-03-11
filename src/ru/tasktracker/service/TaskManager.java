@@ -1,8 +1,8 @@
-package task.manager;
+package ru.tasktracker.service;
 
-import task.Epic;
-import task.Subtask;
-import task.Task;
+import ru.tasktracker.model.Epic;
+import ru.tasktracker.model.Subtask;
+import ru.tasktracker.model.Task;
 
 import java.util.List;
 

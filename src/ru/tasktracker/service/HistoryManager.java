@@ -1,6 +1,6 @@
-package task.manager;
+package ru.tasktracker.service;
 
-import task.Task;
+import ru.tasktracker.model.Task;
 
 import java.util.List;
 
