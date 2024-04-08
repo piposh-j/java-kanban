@@ -1,13 +1,11 @@
 package ru.tasktracker.service;
 
 import ru.tasktracker.model.Task;
-import ru.tasktracker.util.Node;
 
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private Map<Integer, Node> history = new HashMap<>();
@@ -38,8 +36,8 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     public void removeNode(Node<Task> node) {
-        Node<Task> prev = node.getPrev();
-        Node<Task> next = node.getNext();
+        Node<Task> prev = node.prev;
+        Node<Task> next = node.next;
         if (prev == null) {
             first = next;
         }
@@ -49,11 +47,11 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
         if (prev != null) {
-            prev.setNext(next);
+            prev.next = next;
         }
 
         if (next != null) {
-            next.setPrev(prev);
+            next.prev = prev;
         }
     }
 
@@ -65,7 +63,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (l == null) {
             first = newNode;
         } else {
-            l.setNext(newNode);
+            l.next = newNode;
         }
         return newNode;
     }
@@ -76,11 +74,23 @@ public class InMemoryHistoryManager implements HistoryManager {
             return tasks;
         }
 
-        Node<Task> currentNode = new Node(first.getPrev(), first.getItem(), first.getNext());
+        Node<Task> currentNode = new Node(first.prev, first.item, first.next);
         while (currentNode != null) {
-            tasks.add(currentNode.getItem());
-            currentNode = currentNode.getNext();
+            tasks.add(currentNode.item);
+            currentNode = currentNode.next;
         }
         return tasks;
+    }
+
+    private static class Node<T> {
+        Node<T> prev;
+        Node<T> next;
+        T item;
+
+        Node(Node<T> prev, T item, Node<T> next) {
+            this.prev = prev;
+            this.item = item;
+            this.next = next;
+        }
     }
 }
