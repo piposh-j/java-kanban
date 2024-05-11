@@ -195,17 +195,86 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void getHistory_shouldReturnHistory() {
+    void getHistory_shouldReturnUniqueTask() {
         Task task1 = new Task(0, "навзание1", "Описание1", TaskStatus.NEW);
         Task task2 = new Task(1, "навзание2", "Описание2", TaskStatus.NEW);
+        Task task3 = new Task(3, "навзание3", "Описание3", TaskStatus.NEW);
         taskManager.addTask(task1);
         taskManager.addTask(task2);
+        taskManager.addTask(task3);
 
         taskManager.getTaskById(task1.getId());
         taskManager.getTaskById(task2.getId());
+        taskManager.getTaskById(task3.getId());
+        taskManager.getTaskById(task3.getId());
+        taskManager.getTaskById(task2.getId());
+        taskManager.getTaskById(task1.getId());
 
-        assertEquals(2, taskManager.getHistory().size());
-        assertEquals(task1, taskManager.getHistory().get(0));
+        assertEquals(3, taskManager.getHistory().size());
+        assertEquals(task3, taskManager.getHistory().get(0));
         assertEquals(task2, taskManager.getHistory().get(1));
+        assertEquals(task1, taskManager.getHistory().get(2));
+    }
+
+    @Test
+    void getHistory_shouldRemoveTaskFromHistory() {
+        Task task1 = new Task(0, "навзание1", "Описание1", TaskStatus.NEW);
+        Task task2 = new Task(1, "навзание2", "Описание2", TaskStatus.NEW);
+        Task task3 = new Task(3, "навзание3", "Описание3", TaskStatus.NEW);
+        taskManager.addTask(task1);
+        taskManager.addTask(task2);
+        taskManager.addTask(task3);
+        taskManager.getTaskById(task1.getId());
+        taskManager.getTaskById(task2.getId());
+        taskManager.getTaskById(task3.getId());
+
+        taskManager.deleteTaskById(task3.getId());
+        taskManager.deleteTaskById(task2.getId());
+        taskManager.deleteTaskById(task1.getId());
+
+        assertEquals(0, taskManager.getHistory().size());
+    }
+
+    @Test
+    void getHistory_shouldRemoveSubtaskFromHistory() {
+        Epic epic1 = new Epic(0, "Эпик_1", "Описание_1");
+        taskManager.addEpic(epic1);
+        Subtask subtask1 = new Subtask(0, "Подзача1_Эпик1", "Описание1_Эпик1", TaskStatus.NEW, epic1.getId());
+        Subtask subtask2 = new Subtask(1, "Подзача2_Эпик1", "Описание2_Эпик1", TaskStatus.NEW, epic1.getId());
+        taskManager.addSubtask(subtask1);
+        taskManager.addSubtask(subtask2);
+        taskManager.getEpicById(epic1.getId());
+        taskManager.getSubtaskById(subtask1.getId());
+        taskManager.getSubtaskById(subtask2.getId());
+
+        taskManager.deleteEpicById(epic1.getId());
+
+        assertEquals(0, taskManager.getHistory().size());
+    }
+
+
+    void getHistory_shouldReturnUniqueHistory() {
+        Task task1 = new Task(0, "навзание1", "Описание1", TaskStatus.NEW);
+        taskManager.addTask(task1);
+        Epic epic1 = new Epic(0, "Эпик_1", "Описание_1");
+        taskManager.addEpic(epic1);
+        Subtask subtask1 = new Subtask(0, "Подзача1_Эпик1", "Описание1_Эпик1", TaskStatus.NEW, epic1.getId());
+        Subtask subtask2 = new Subtask(1, "Подзача2_Эпик1", "Описание2_Эпик1", TaskStatus.NEW, epic1.getId());
+        taskManager.addSubtask(subtask1);
+        taskManager.addSubtask(subtask2);
+
+        taskManager.getEpicById(epic1.getId());
+        taskManager.getSubtaskById(subtask1.getId());
+        taskManager.getSubtaskById(subtask2.getId());
+        taskManager.getTaskById(task1.getId());
+        taskManager.getSubtaskById(subtask2.getId());
+        taskManager.getEpicById(epic1.getId());
+
+        assertEquals(4, taskManager.getHistory().size());
+        assertEquals(subtask1, taskManager.getHistory().get(0));
+        assertEquals(task1, taskManager.getHistory().get(1));
+        assertEquals(subtask2, taskManager.getHistory().get(2));
+        assertEquals(epic1, taskManager.getHistory().get(3));
+
     }
 }

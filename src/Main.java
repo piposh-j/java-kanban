@@ -53,7 +53,7 @@ public class Main {
         System.out.println(taskManager.getEpics());
         System.out.println(taskManager.getSubtasks());
 
-        taskManager.getTaskById(1);
+        taskManager.getTaskById(task1.getId());
         System.out.println("getHistory");
         System.out.println(taskManager.getHistory());
 
