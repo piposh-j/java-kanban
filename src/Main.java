@@ -39,21 +39,13 @@ public class Main {
 
         Task newStatusTask = new Task(task1.getId(), "Новоое название задачи", "Новое описание задачи", TaskStatus.DONE);
         taskManager.updateTask(newStatusTask);
-        taskManager.deleteTaskById(task2.getId());
-
-        Subtask newSubtaskStatus1 = new Subtask(subtask1.getId(), "Новая подзадача_1", "Новое описание подзадачи_1", TaskStatus.DONE, epic1.getId());
-        Subtask newSubtaskStatus2 = new Subtask(subtask3.getId(), "Новая подзадача_3", "Новое описание подзадачи_3", TaskStatus.IN_PROGRESS, epic2.getId());
-
-        taskManager.updateSubtask(newSubtaskStatus1);
-        taskManager.updateSubtask(newSubtaskStatus2);
-
-        taskManager.deleteSubtaskById(subtask2.getId());
 
         System.out.println(taskManager.getTasks());
         System.out.println(taskManager.getEpics());
         System.out.println(taskManager.getSubtasks());
 
         taskManager.getTaskById(task1.getId());
+        taskManager.getSubtaskById(subtask1.getId());
         System.out.println("getHistory");
         System.out.println(taskManager.getHistory());
 

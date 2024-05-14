@@ -1,13 +1,12 @@
 package ru.tasktracker.model;
-
-public enum TaskStatus {
-    NEW("NEW"),
-    IN_PROGRESS("IN_PROGRESS"),
-    DONE("DONE");
+public enum TypeTask {
+    TASK("TASK"),
+    SUBTASK("SUBTASK"),
+    EPIC("EPIC");
 
     private String value;
 
-    TaskStatus(final String value) {
+    TypeTask(final String value) {
         this.value = value;
     }
 
