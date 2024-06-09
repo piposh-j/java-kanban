@@ -15,10 +15,10 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    public static File file;
+    private File file;
 
-    public FileBackedTaskManager(HistoryManager historyManager) {
-        super(historyManager);
+    public FileBackedTaskManager() {
+        super(Managers.getDefaultHistory());
     }
 
     private void save() {
@@ -71,8 +71,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static FileBackedTaskManager loadFromFile(File file) {
-        FileBackedTaskManager.file = file;
-        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(Managers.getDefaultHistory());
+        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager();
+        fileBackedTaskManager.file = file;
+
         try {
             List<String> list = Files.readAllLines(file.toPath());
 
@@ -102,7 +103,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private static void loadHistory(FileBackedTaskManager fileBackedTaskManager) {
         Task task = null;
         try {
-            List<String> lines = Files.readAllLines(file.toPath());
+            List<String> lines = Files.readAllLines(fileBackedTaskManager.file.toPath());
             if (lines.isEmpty() || !fileBackedTaskManager.existsIdsInFile(lines)) {
                 return;
             }
