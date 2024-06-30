@@ -48,6 +48,5 @@ public class Main {
         taskManager.getSubtaskById(subtask1.getId());
         System.out.println("getHistory");
         System.out.println(taskManager.getHistory());
-
     }
 }

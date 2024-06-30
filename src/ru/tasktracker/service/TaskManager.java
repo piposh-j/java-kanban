@@ -5,6 +5,7 @@ import ru.tasktracker.model.Subtask;
 import ru.tasktracker.model.Task;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TaskManager {
 
@@ -47,4 +48,6 @@ public interface TaskManager {
     List<Subtask> getSubtasksByEpic(Epic epic);
 
     List<Task> getHistory();
+
+    Set<Task> getPrioritizedTasks();
 }
