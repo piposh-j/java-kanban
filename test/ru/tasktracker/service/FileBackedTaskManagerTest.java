@@ -2,11 +2,13 @@ package ru.tasktracker.service;
 
 
 import org.junit.jupiter.api.Test;
+import ru.tasktracker.exception.ManagerSaveException;
 import ru.tasktracker.model.Epic;
 import ru.tasktracker.model.Subtask;
 import ru.tasktracker.model.Task;
 import ru.tasktracker.model.TaskStatus;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
     Path tempFile;
+
     @Override
     protected FileBackedTaskManager createTaskManager() throws IOException {
         tempFile = Files.createTempFile(null, null);
@@ -81,6 +84,14 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
     }
 
     @Test
+    void loadFromFile_throwException() {
+        assertThrows(ManagerSaveException.class, () -> {
+            taskManager = FileBackedTaskManager.loadFromFile(new File("exception.csv"));
+        }, "Ошибка при загрузке данных");
+    }
+
+
+    @Test
     void loadFromFileWithHistory_initTask() throws IOException {
         String textData = """
                 id,name,status,description,startTime,duration,endTime,type,epic_id,subtask_ids
@@ -139,7 +150,7 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
 
 
     @Test
-    void save_checkTaskSaveToFileWithoutHistorySuccess() throws IOException {
+    void save_checkTaskSaveToFileWithoutHistorySuccess() {
 
         Task task1 = new Task(0, "Задача_1", "Описание_1", TaskStatus.NEW);
         taskManager.addTask(task1);

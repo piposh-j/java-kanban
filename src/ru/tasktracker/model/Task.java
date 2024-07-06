@@ -9,6 +9,8 @@ public class Task {
     private String name;
     private String description;
     private TaskStatus status;
+    private Duration duration;
+    private LocalDateTime startTime;
 
     public Duration getDuration() {
         return duration;
@@ -25,9 +27,6 @@ public class Task {
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
-
-    private Duration duration;
-    private LocalDateTime startTime;
 
     public Task(int id, String name, String description, TaskStatus status) {
         this.id = id;

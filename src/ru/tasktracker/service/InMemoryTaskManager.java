@@ -41,7 +41,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task addTask(Task task) {
-        if (!hasOverlap(task)) {
+        if (task != null && !hasOverlap(task)) {
             task.setId(id++);
             tasks.put(task.getId(), task);
             addTaskToSortedTasks(task);
@@ -85,8 +85,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic addEpic(Epic epic) {
-        epic.setId(id++);
-        epics.put(epic.getId(), epic);
+        if (epic != null) {
+            epic.setId(id++);
+            epics.put(epic.getId(), epic);
+        }
         return epic;
     }
 
@@ -137,7 +139,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Subtask addSubtask(Subtask subtask) {
-        if (!hasOverlap(subtask)) {
+        if (subtask != null && !hasOverlap(subtask)) {
             Epic epic = epics.get(subtask.getEpicId());
             subtask.setId(id++);
             subtask.setEpicId(epic.getId());
@@ -222,31 +224,37 @@ public class InMemoryTaskManager implements TaskManager {
     private void updateEpicTime(Epic epic) {
         List<Integer> subtaskIds = epic.getSubtaskIds();
 
-        Optional<Subtask> startSubtask = subtaskIds
-                .stream()
-                .map(subtasks::get)
-                .filter(subtask -> subtask.getStartTime() != null)
-                .min(Comparator.comparing(Task::getStartTime));
+        LocalDateTime startTime = findStartTimeInSubtasks(subtaskIds);
+        LocalDateTime endTime = findEndTimeInSubtasks(subtaskIds);
 
-        Optional<Subtask> endSubtask = subtaskIds
-                .stream()
-                .map(subtasks::get)
-                .filter(subtask -> subtask.getStartTime() != null)
-                .max(Comparator.comparing(Task::getEndTime));
+        epic.setStartTime(startTime);
 
-        if (startSubtask.isPresent()) {
-            epic.setStartTime(startSubtask.get().getStartTime());
-        } else {
-            epic.setStartTime(null);
-        }
-
-        if (endSubtask.isPresent()) {
-            epic.setEndTime(endSubtask.get().getEndTime());
-            epic.setDuration(Duration.between(epic.getStartTime(), epic.getEndTime()));
+        if (endTime != null) {
+            epic.setEndTime(endTime);
+            epic.setDuration(Duration.between(startTime, endTime));
         } else {
             epic.setEndTime(null);
         }
+    }
 
+    private LocalDateTime findStartTimeInSubtasks(List<Integer> subtaskIds) {
+        return subtaskIds
+                .stream()
+                .map(subtasks::get)
+                .filter(subtask -> subtask.getStartTime() != null)
+                .min(Comparator.comparing(Task::getStartTime))
+                .map(Task::getStartTime)
+                .orElse(null);
+    }
+
+    private LocalDateTime findEndTimeInSubtasks(List<Integer> subtaskIds) {
+        return subtaskIds
+                .stream()
+                .map(subtasks::get)
+                .filter(subtask -> subtask.getStartTime() != null)
+                .max(Comparator.comparing(Task::getEndTime))
+                .map(Task::getEndTime)
+                .orElse(null);
     }
 
     public Set<Task> getPrioritizedTasks() {
@@ -263,8 +271,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private boolean hasOverlap(Task newTask) {
-        boolean isHasOverlap = sortedTasks.stream().anyMatch(task -> checkIntersection(task, newTask));
-        if (isHasOverlap) {
+        if (sortedTasks.stream().anyMatch(task -> checkIntersection(task, newTask))) {
             throw new TaskTimeConflictException("Конфликт времени между задачами");
         }
         return false;

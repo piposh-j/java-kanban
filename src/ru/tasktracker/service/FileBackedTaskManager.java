@@ -193,11 +193,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 Epic epic = new Epic(id, name, description);
                 epic.setStatus(taskStatus);
                 String[] subtaskIds = array[9].split(";");
-                List<Integer> list = new ArrayList<>();
-                for (String subtaskId : subtaskIds) {
-                    list.add(Integer.parseInt(subtaskId));
+                if (!subtaskIds[0].endsWith("-")) {
+                    List<Integer> list = new ArrayList<>();
+                    for (String subtaskId : subtaskIds) {
+                        list.add(Integer.parseInt(subtaskId));
+                    }
+                    epic.setSubtaskIds(list);
                 }
-                epic.setSubtaskIds(list);
+
                 epic.setStartTime(startTime);
                 epic.setDuration(duration);
                 epic.setEndTime(endTime);

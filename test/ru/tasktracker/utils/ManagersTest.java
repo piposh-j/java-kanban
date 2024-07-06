@@ -14,13 +14,13 @@ public class ManagersTest {
     void getDefaultHistory_shouldReturnInstanceInMemoryHistoryManager() {
         HistoryManager history = Managers.getDefaultHistory();
 
-        Assertions.assertTrue(history instanceof InMemoryHistoryManager);
+        Assertions.assertInstanceOf(InMemoryHistoryManager.class, history);
     }
 
     @Test
     void getDefault_shouldReturnInstanceInMemoryTaskManager() {
         TaskManager history = Managers.getDefault();
 
-        Assertions.assertTrue(history instanceof InMemoryTaskManager);
+        Assertions.assertInstanceOf(InMemoryTaskManager.class, history);
     }
 }
