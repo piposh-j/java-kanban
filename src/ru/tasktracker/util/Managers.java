@@ -2,6 +2,8 @@ package ru.tasktracker.util;
 
 import ru.tasktracker.service.*;
 
+import java.io.File;
+
 public class Managers {
 
     public static HistoryManager getDefaultHistory() {
@@ -9,6 +11,7 @@ public class Managers {
     }
 
     public static TaskManager getDefault() {
-        return new InMemoryTaskManager(getDefaultHistory());
+        //return new InMemoryTaskManager(getDefaultHistory());
+        return FileBackedTaskManager.loadFromFile(new File("./src/resources/data.csv"));
     }
 }
