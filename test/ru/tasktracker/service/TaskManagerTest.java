@@ -56,9 +56,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void addSubtask_shouldAddSubtaskToManager() {
         Epic epic = new Epic(0, "навзание", "Описание");
-        Subtask subtask = new Subtask(1, "название", "описание", TaskStatus.NEW, epic.getId());
         taskManager.addEpic(epic);
 
+        Subtask subtask = new Subtask(1, "название", "описание", TaskStatus.NEW, epic.getId());
         taskManager.addSubtask(subtask);
 
         assertEquals(1, taskManager.getSubtasks().size());
@@ -67,9 +67,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void addTask_shouldOverwriteIdsSubtask() {
         Epic epic = new Epic(0, "навзание", "Описание");
+        taskManager.addEpic(epic);
         Subtask subtask1 = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
         Subtask subtask2 = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
-        taskManager.addEpic(epic);
 
         taskManager.addSubtask(subtask1);
         taskManager.addSubtask(subtask2);
@@ -81,8 +81,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void getSubtaskById_shouldFindSubtaskToManager() {
         Epic epic = new Epic(0, "навзание", "Описание");
-        Subtask subtask = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
         taskManager.addEpic(epic);
+        Subtask subtask = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
 
         taskManager.addSubtask(subtask);
 

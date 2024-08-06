@@ -13,7 +13,7 @@ public class Epic extends Task {
     }
 
     public List<Integer> getSubtaskIds() {
-        return subtaskIds;
+        return subtaskIds == null ? List.of() : subtaskIds;
     }
 
     public void setSubtaskIds(List<Integer> subtaskIds) {

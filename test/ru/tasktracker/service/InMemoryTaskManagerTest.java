@@ -23,11 +23,10 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     @Test
     void updateEpicStatus_shouldReturnStatusInProgressInEpic() {
         Epic epic = new Epic(0, "навзание", "Описание");
-        Subtask subtask = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
         taskManager.addEpic(epic);
+        Subtask subtask = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
         taskManager.addSubtask(subtask);
         Subtask newSubtask = new Subtask(subtask.getId(), "Новая подзадача_1", "Новое описание подзадачи_1", TaskStatus.IN_PROGRESS, epic.getId());
-
         taskManager.updateSubtask(newSubtask);
 
         assertEquals(TaskStatus.IN_PROGRESS, taskManager.getEpicById(epic.getId()).getStatus());
@@ -36,8 +35,9 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     @Test
     void updateEpicStatus_shouldReturnStatusDoneInEpic() {
         Epic epic = new Epic(0, "навзание", "Описание");
-        Subtask subtask = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
         taskManager.addEpic(epic);
+
+        Subtask subtask = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
         taskManager.addSubtask(subtask);
         Subtask newSubtask = new Subtask(subtask.getId(), "Новая подзадача_1", "Новое описание подзадачи_1", TaskStatus.DONE, epic.getId());
 
@@ -49,8 +49,9 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     @Test
     void addTask_shouldReturnStatusDoneInEpic() {
         Epic epic = new Epic(0, "навзание", "Описание");
-        Subtask subtask = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
         taskManager.addEpic(epic);
+
+        Subtask subtask = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
         taskManager.addSubtask(subtask);
         Subtask newSubtask = new Subtask(subtask.getId(), "Новая подзадача_1", "Новое описание подзадачи_1", TaskStatus.DONE, epic.getId());
 
@@ -62,10 +63,10 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     @Test
     void updateEpicStatus_checkStatusNewInEpicIfAllSubtasksHasStatusNew() {
         Epic epic = new Epic(0, "навзание", "Описание");
+        taskManager.addEpic(epic);
+
         Subtask subtask1 = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
         Subtask subtask2 = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
-
-        taskManager.addEpic(epic);
         taskManager.addSubtask(subtask1);
         taskManager.addSubtask(subtask2);
 
@@ -76,10 +77,10 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     @Test
     void updateEpicStatus_checkStatusDoneInEpicIfAllSubtasksHasStatusDone() {
         Epic epic = new Epic(0, "навзание", "Описание");
+        taskManager.addEpic(epic);
+
         Subtask subtask1 = new Subtask(0, "название", "описание", TaskStatus.DONE, epic.getId());
         Subtask subtask2 = new Subtask(0, "название", "описание", TaskStatus.DONE, epic.getId());
-
-        taskManager.addEpic(epic);
         taskManager.addSubtask(subtask1);
         taskManager.addSubtask(subtask2);
 
@@ -90,10 +91,11 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     @Test
     void updateEpicStatus_checkStatusInProgressInEpicIfAllSubtasksHasStatusInProgress() {
         Epic epic = new Epic(0, "навзание", "Описание");
+        taskManager.addEpic(epic);
+
         Subtask subtask1 = new Subtask(0, "название", "описание", TaskStatus.IN_PROGRESS, epic.getId());
         Subtask subtask2 = new Subtask(0, "название", "описание", TaskStatus.IN_PROGRESS, epic.getId());
 
-        taskManager.addEpic(epic);
         taskManager.addSubtask(subtask1);
         taskManager.addSubtask(subtask2);
 
@@ -117,8 +119,9 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     @Test
     void deleteEpicById_shouldDeleteEpicAndSubtask() {
         Epic epic = new Epic(0, "навзание", "Описание");
-        Subtask subtask1 = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
         taskManager.addEpic(epic);
+
+        Subtask subtask1 = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
         taskManager.addSubtask(subtask1);
 
         taskManager.deleteEpicById(epic.getId());
@@ -130,8 +133,8 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     @Test
     void deleteSubtaskById_checkUnlinkEpicAfterDeleteSubtask() {
         Epic epic = new Epic(0, "навзание", "Описание");
-        Subtask subtask1 = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
         taskManager.addEpic(epic);
+        Subtask subtask1 = new Subtask(0, "название", "описание", TaskStatus.NEW, epic.getId());
         taskManager.addSubtask(subtask1);
 
         taskManager.deleteSubtaskById(subtask1.getId());
