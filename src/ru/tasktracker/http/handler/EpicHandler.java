@@ -1,4 +1,4 @@
-package ru.tasktracker.handler;
+package ru.tasktracker.http.handler;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
@@ -7,17 +7,17 @@ import ru.tasktracker.enums.HttpMethod;
 import ru.tasktracker.exception.ErrorMessage;
 import ru.tasktracker.exception.NotFoundException;
 import ru.tasktracker.exception.TaskTimeConflictException;
-import ru.tasktracker.model.Task;
+import ru.tasktracker.model.Epic;
+import ru.tasktracker.model.Subtask;
 import ru.tasktracker.service.TaskManager;
-import ru.tasktracker.util.BaseHttpHandler;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
 
-public class TaskHandler extends BaseHttpHandler implements HttpHandler {
+public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     private final TaskManager taskManager;
 
-    public TaskHandler(TaskManager taskManager, Gson gson) {
+    public EpicHandler(TaskManager taskManager, Gson gson) {
         super(gson);
         this.taskManager = taskManager;
     }
@@ -30,27 +30,31 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
             switch (HttpMethod.valueOf(httpMethod)) {
                 case GET -> {
                     if (checkIdInUrl(path)) {
-                        int id = getIdInUrl(path);
                         try {
-                            Task task = taskManager.getTaskById(id);
-                            writeResponse(exchange, task, 200);
+                            int id = getIdInUrl(path);
+                            if (path.contains("/subtasks")) {
+                                List<Subtask> subtaskList = taskManager.getSubtasksByEpic(id);
+                                writeResponse(exchange, subtaskList, 200);
+                                return;
+                            }
+                            Epic epic = taskManager.getEpicById(id);
+                            writeResponse(exchange, epic, 200);
                         } catch (NotFoundException exception) {
                             writeResponse(exchange, new ErrorMessage(exception.getMessage()), 404);
                         }
                     } else {
-                        writeResponse(exchange, taskManager.getTasks(), 200);
+                        writeResponse(exchange, taskManager.getEpics(), 200);
                     }
                 }
                 case POST -> {
                     try {
-                        String requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-                        Task task = gson.fromJson(requestBody, Task.class);
+                        Epic epic = gson.fromJson(readRequest(exchange), Epic.class);
                         if (checkIdInUrl(path)) {
                             int id = getIdInUrl(path);
-                            task.setId(id);
-                            writeResponse(exchange, taskManager.updateTask(task), 200);
+                            epic.setId(id);
+                            writeResponse(exchange, taskManager.updateEpic(epic), 200);
                         } else {
-                            writeResponse(exchange, taskManager.addTask(task), 201);
+                            writeResponse(exchange, taskManager.addEpic(epic), 201);
                         }
                     } catch (NotFoundException exception) {
                         writeResponse(exchange, new ErrorMessage(exception.getMessage()), 404);
@@ -61,8 +65,8 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 case DELETE -> {
                     int id = getIdInUrl(path);
                     try {
-                        Task task = taskManager.deleteTaskById(id);
-                        writeResponse(exchange, task, 200);
+                        Epic epic = taskManager.deleteEpicById(id);
+                        writeResponse(exchange, epic, 200);
                     } catch (NotFoundException exception) {
                         writeResponse(exchange, new ErrorMessage(exception.getMessage()), 404);
                     }

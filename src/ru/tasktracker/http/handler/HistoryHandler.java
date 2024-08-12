@@ -1,4 +1,4 @@
-package ru.tasktracker.handler;
+package ru.tasktracker.http.handler;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
@@ -6,14 +6,13 @@ import com.sun.net.httpserver.HttpHandler;
 import ru.tasktracker.enums.HttpMethod;
 import ru.tasktracker.exception.ErrorMessage;
 import ru.tasktracker.service.TaskManager;
-import ru.tasktracker.util.BaseHttpHandler;
 
 import java.io.IOException;
 
-public class PrioritizedTasksHandler extends BaseHttpHandler implements HttpHandler {
+public class HistoryHandler extends BaseHttpHandler implements HttpHandler {
     private final TaskManager taskManager;
 
-    public PrioritizedTasksHandler(TaskManager taskManager, Gson gson) {
+    public HistoryHandler(TaskManager taskManager, Gson gson) {
         super(gson);
         this.taskManager = taskManager;
     }
@@ -24,7 +23,7 @@ public class PrioritizedTasksHandler extends BaseHttpHandler implements HttpHand
         try {
             switch (HttpMethod.valueOf(httpMethod)) {
                 case GET -> {
-                    writeResponse(exchange, taskManager.getPrioritizedTasks(), 200);
+                    writeResponse(exchange, taskManager.getHistory(), 200);
                 }
             }
         } catch (Exception exception) {

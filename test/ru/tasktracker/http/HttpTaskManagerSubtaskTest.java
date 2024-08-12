@@ -1,13 +1,16 @@
-package ru.tasktracker.service;
+package ru.tasktracker.http;
 
 import com.google.gson.Gson;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.tasktracker.HttpTaskServer;
+import ru.tasktracker.http.HttpTaskServer;
 import ru.tasktracker.model.Epic;
 import ru.tasktracker.model.Subtask;
 import ru.tasktracker.model.TaskStatus;
+import ru.tasktracker.service.InMemoryHistoryManager;
+import ru.tasktracker.service.InMemoryTaskManager;
+import ru.tasktracker.service.TaskManager;
 
 import java.io.IOException;
 import java.net.URI;

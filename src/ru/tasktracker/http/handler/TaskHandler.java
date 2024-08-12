@@ -1,4 +1,4 @@
-package ru.tasktracker.handler;
+package ru.tasktracker.http.handler;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
@@ -7,17 +7,15 @@ import ru.tasktracker.enums.HttpMethod;
 import ru.tasktracker.exception.ErrorMessage;
 import ru.tasktracker.exception.NotFoundException;
 import ru.tasktracker.exception.TaskTimeConflictException;
-import ru.tasktracker.model.Subtask;
+import ru.tasktracker.model.Task;
 import ru.tasktracker.service.TaskManager;
-import ru.tasktracker.util.BaseHttpHandler;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
-public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
+public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     private final TaskManager taskManager;
 
-    public SubtaskHandler(TaskManager taskManager, Gson gson) {
+    public TaskHandler(TaskManager taskManager, Gson gson) {
         super(gson);
         this.taskManager = taskManager;
     }
@@ -32,25 +30,24 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                     if (checkIdInUrl(path)) {
                         int id = getIdInUrl(path);
                         try {
-                            Subtask task = taskManager.getSubtaskById(id);
+                            Task task = taskManager.getTaskById(id);
                             writeResponse(exchange, task, 200);
                         } catch (NotFoundException exception) {
                             writeResponse(exchange, new ErrorMessage(exception.getMessage()), 404);
                         }
                     } else {
-                        writeResponse(exchange, taskManager.getSubtasks(), 200);
+                        writeResponse(exchange, taskManager.getTasks(), 200);
                     }
                 }
                 case POST -> {
                     try {
-                        String requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-                        Subtask subtask = gson.fromJson(requestBody, Subtask.class);
+                        Task task = gson.fromJson(readRequest(exchange), Task.class);
                         if (checkIdInUrl(path)) {
                             int id = getIdInUrl(path);
-                            subtask.setId(id);
-                            writeResponse(exchange, taskManager.updateSubtask(subtask), 200);
+                            task.setId(id);
+                            writeResponse(exchange, taskManager.updateTask(task), 200);
                         } else {
-                            writeResponse(exchange, taskManager.addSubtask(subtask), 201);
+                            writeResponse(exchange, taskManager.addTask(task), 201);
                         }
                     } catch (NotFoundException exception) {
                         writeResponse(exchange, new ErrorMessage(exception.getMessage()), 404);
@@ -61,8 +58,8 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                 case DELETE -> {
                     int id = getIdInUrl(path);
                     try {
-                        Subtask subtask = taskManager.deleteSubtaskById(id);
-                        writeResponse(exchange, subtask, 200);
+                        Task task = taskManager.deleteTaskById(id);
+                        writeResponse(exchange, task, 200);
                     } catch (NotFoundException exception) {
                         writeResponse(exchange, new ErrorMessage(exception.getMessage()), 404);
                     }

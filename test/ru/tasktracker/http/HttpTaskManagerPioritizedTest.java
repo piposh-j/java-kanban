@@ -1,14 +1,17 @@
-package ru.tasktracker.service;
+package ru.tasktracker.http;
 
 import com.google.gson.Gson;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.tasktracker.HttpTaskServer;
+import ru.tasktracker.http.HttpTaskServer;
 import ru.tasktracker.model.Epic;
 import ru.tasktracker.model.Subtask;
 import ru.tasktracker.model.Task;
 import ru.tasktracker.model.TaskStatus;
+import ru.tasktracker.service.InMemoryHistoryManager;
+import ru.tasktracker.service.InMemoryTaskManager;
+import ru.tasktracker.service.TaskManager;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,11 +20,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class HttpTaskManagerHistoryTest {
+public class HttpTaskManagerPioritizedTest {
     TaskManager manager = new InMemoryTaskManager((new InMemoryHistoryManager()));
     HttpTaskServer httpTaskServer = new HttpTaskServer(manager);
     Gson gson = httpTaskServer.getGson();
@@ -40,7 +43,7 @@ public class HttpTaskManagerHistoryTest {
     }
 
     @Test
-    public void testGetHistory() throws IOException, InterruptedException {
+    public void testGetPrioritized() throws IOException, InterruptedException {
         Epic epic = new Epic(0, "Epic1", "Testing Epic 1");
         Epic createdEpic = manager.addEpic(epic);
 
@@ -77,7 +80,7 @@ public class HttpTaskManagerHistoryTest {
 
         client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        URI historyUrl = URI.create("http://localhost:8080/history");
+        URI historyUrl = URI.create("http://localhost:8080/prioritized");
         request = HttpRequest
                 .newBuilder()
                 .uri(historyUrl)
@@ -85,8 +88,8 @@ public class HttpTaskManagerHistoryTest {
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
-        List<Task> historyFromManager = manager.getHistory();
+        Set<Task> historyFromManager = manager.getPrioritizedTasks();
         assertNotNull(historyFromManager, "Задачи не возвращаются");
-        assertEquals(3, historyFromManager.size());
+        assertEquals(2, historyFromManager.size());
     }
 }

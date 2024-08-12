@@ -1,4 +1,4 @@
-package ru.tasktracker.util;
+package ru.tasktracker.http.handler;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
@@ -44,5 +44,9 @@ public class BaseHttpHandler {
     protected int getIdInUrl(String path) {
         String[] pathArr = path.split("/");
         return Integer.parseInt(pathArr[2]);
+    }
+
+    protected String readRequest(HttpExchange h) throws IOException {
+        return new String(h.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
     }
 }
