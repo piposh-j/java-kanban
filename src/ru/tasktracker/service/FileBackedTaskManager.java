@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -43,6 +44,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
             bw.newLine();
             bw.flush();
+            saveHistory();
         } catch (IOException ioException) {
             throw new ManagerSaveException("Ошибка при сохранении данных");
         }
@@ -72,7 +74,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 result.append("-").append(',');
             }
             result.append(TypeTask.EPIC).append(",").append("-").append(",");
-            List<Integer> list = ((Epic) task).getSubtaskIds();
+            List<Integer> list = Optional.ofNullable(((Epic) task).getSubtaskIds()).orElse(List.of());
             String joined = list.stream()
                     .map(String::valueOf)
                     .collect(Collectors.joining(";"));
@@ -106,7 +108,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (!fileBackedTaskManager.containsTask(list.get(i))) {
                     continue;
                 }
-                Task task = fromString(list.get(i));
+                Task task = fileBackedTaskManager.fromString(list.get(i));
                 if (task instanceof Epic) {
                     fileBackedTaskManager.epics.put(task.getId(), (Epic) task);
                 } else if (task instanceof Subtask) {
@@ -160,7 +162,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return string.matches(".*,(SUBTASK|TASK|EPIC),.*");
     }
 
-    private static Task fromString(String value) {
+    private Task fromString(String value) {
         String[] array = value.split(",");
 
         TypeTask typeTask = TypeTask.valueOf(array[7]);
@@ -187,7 +189,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             endTime = LocalDateTime.parse(tmpEndTime, dateTimeFormatter);
         }
 
-
         switch (typeTask) {
             case EPIC -> {
                 Epic epic = new Epic(id, name, description);
@@ -204,6 +205,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 epic.setStartTime(startTime);
                 epic.setDuration(duration);
                 epic.setEndTime(endTime);
+                addTaskToSortedTasks(epic);
                 return epic;
             }
             case SUBTASK -> {
@@ -219,12 +221,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 );
             }
             default -> {
-                return new Task(id,
+                Task task = new Task(id,
                         name,
                         description,
                         taskStatus,
                         startTime,
                         duration);
+                addTaskToSortedTasks(task);
+                return task;
             }
         }
     }
@@ -240,6 +244,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
 
             for (String data : list) {
+
                 bw.append(data);
                 bw.newLine();
             }
